@@ -1,0 +1,30 @@
+# Docker Compose for Fantasy Copilot with Redis
+# 
+# FDE Interview Talking Point:
+# - Easy deployment for customer demos
+# - Single command to spin up entire stack
+# - Configurable via environment variables
+#
+# Usage:
+#   docker-compose up -d redis    # Start just Redis
+#   docker-compose up             # Start everything
+
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: fantasy-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  redis_data:
