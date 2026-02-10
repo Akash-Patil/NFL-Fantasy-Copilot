@@ -36,9 +36,10 @@ COPY . .
 # Expose port (Fly.io uses PORT env var)
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health')" || exit 1
+# Health check - simplified to avoid requiring extra dependencies
+# Fly.io will use the health check in fly.toml instead
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+#     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" || exit 1
 
 # Run the application
 # Note: Fly.io sets PORT env variable, we use it with fallback to 8000
